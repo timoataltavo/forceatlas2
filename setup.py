@@ -11,31 +11,32 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), 'r') as f:
     long_description = f.read()
 
-print(">>>> Cython is installed?")
-try:
-    from Cython.Distutils import Extension
-    from Cython.Build import build_ext
-    USE_CYTHON = True
-    print('Yes\n')
-except ImportError:
-    from setuptools.extension import Extension
-    USE_CYTHON = False
-    print('Cython is not installed; using pre-generated C files if available')
-    print('Please install Cython first and try again if you face any installation problems\n')
-    print(">>>> Are pre-generated C files available?")
+# print(">>>> Cython is installed?")
+# try:
+#     from Cython.Distutils import Extension
+#     from Cython.Build import build_ext
+#     USE_CYTHON = True
+#     print('Yes\n')
+# except ImportError:
+#     from setuptools.extension import Extension
+#     USE_CYTHON = False
+#     print('Cython is not installed; using pre-generated C files if available')
+#     print('Please install Cython first and try again if you face any installation problems\n')
+#     print(">>>> Are pre-generated C files available?")
 
-if USE_CYTHON:
-    ext_modules = [Extension('fa2.fa2util', ['fa2/fa2util.py', 'fa2/fa2util.pxd'], cython_directives={'language_level' : 3})]
-    cmdclass = {'build_ext': build_ext}
-    opts = {"ext_modules": ext_modules, "cmdclass": cmdclass}
-elif path.isfile(path.join(here, 'fa2/fa2util.c')):
-    print("Yes\n")
-    ext_modules = [Extension('fa2.fa2util', ['fa2/fa2util.c'])]
-    cmdclass = {}
-    opts = {"ext_modules": ext_modules, "cmdclass": cmdclass}
-else:
-    print("Pre-generated C files are not available. This library will be slow without Cython optimizations.\n")
-    opts = {"py_modules": ["fa2.fa2util"]}
+# if USE_CYTHON:
+#     ext_modules = [Extension('fa2.fa2util', ['fa2/fa2util.py', 'fa2/fa2util.pxd'], cython_directives={'language_level' : 3})]
+#     cmdclass = {'build_ext': build_ext}
+#     opts = {"ext_modules": ext_modules, "cmdclass": cmdclass}
+# elif path.isfile(path.join(here, 'fa2/fa2util.c')):
+#     print("Yes\n")
+#     ext_modules = [Extension('fa2.fa2util', ['fa2/fa2util.c'])]
+#     cmdclass = {}
+#     opts = {"ext_modules": ext_modules, "cmdclass": cmdclass}
+# else:
+print("Altavo MOD of fa2 - disabled cython\n")
+print("Pre-generated C files are not available. This library will be slow without Cython optimizations.\n")
+opts = {"py_modules": ["fa2.fa2util"]}
 
 # Uncomment the following line if you want to install without optimizations
 # opts = {"py_modules": ["fa2.fa2util"]}
@@ -65,9 +66,8 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3'
     ],
-    install_requires=['numpy', 'scipy', 'tqdm'],
+    install_requires=['numpy', 'scipy', 'tqdm', 'networkx<3.0.0'],
     extras_require={
-        'networkx': ['networkx'],
         'igraph': ['python-igraph']
     },
     include_package_data=True,
